@@ -377,12 +377,15 @@ impl Orchestrator {
     let mut schema_names = graph.keys();
     schema_names.sort_by_key(|name| graph.get(name).is_none_or(|schema| schema.enum_values.is_empty()));
 
+    println!("has BetaJsonValue? {}", graph.contains("BetaJsonValue"));
+
     {
       let mut cache = schema_converter.context().cache.borrow_mut();
       for schema_name in &schema_names {
-        if operation_reachable.is_some_and(|filter| !filter.contains(schema_name.as_str())) {
-          continue;
-        }
+        // if operation_reachable.is_some_and(|filter| !filter.contains(schema_name.as_str())) {
+        //   println!("Skipping schema: {}", schema_name);
+        //   continue;
+        // }
         if let Some(schema) = graph.get(schema_name) {
           let _ = cache.register_top_level_schema(schema, schema_name);
         }
@@ -390,11 +393,13 @@ impl Orchestrator {
     }
 
     for schema_name in schema_names {
-      if operation_reachable.is_some_and(|filter| !filter.contains(schema_name.as_str())) {
-        continue;
-      }
+      // if operation_reachable.is_some_and(|filter| !filter.contains(schema_name.as_str())) {
+      //   println!("Skipping schema2: {}", schema_name);
+      //   continue;
+      // }
 
       let Some(schema) = graph.get(schema_name) else {
+        println!("Schema not found in graph: {}", schema_name);
         continue;
       };
 

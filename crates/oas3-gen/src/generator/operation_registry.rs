@@ -227,8 +227,8 @@ impl OperationRegistry {
   ) -> Self {
     OperationRegistryBuilder::new()
       .with_filter(OperationFilter::new(only_operations, excluded_operations))
-      .with_source(HttpOperationSource::new(spec))
-      .with_source(WebhookOperationSource::new(spec))
+      // .with_source(HttpOperationSource::new(spec))
+      // .with_source(WebhookOperationSource::new(spec))
       .build()
   }
 
